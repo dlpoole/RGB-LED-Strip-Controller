@@ -43,11 +43,11 @@ reference to the accompanying remote keypad overlay, t</span>he
 	variation by half</p>
 	<li/>
 <p><b>SAT</b>:
-	Return to the selected, fully saturated hue at max brightness;
+	Return to the current hue, fully saturated at max brightness;
 	cancel variable hue</p>
 	<li/>
 <p><b>+RED</b>:
-	Increase the Red component and change HSB accordingly</p>
+	Increase the Red component and adjust HSB accordingly</p>
 	<li/>
 <p><b>+GREEN</b>:
 	Increase the Green component and adjust HSB accordingly</p>

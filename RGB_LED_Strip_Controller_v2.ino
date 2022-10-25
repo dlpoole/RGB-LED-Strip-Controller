@@ -1,7 +1,7 @@
 /*
   -----------------------------------------------------------------------------------
                  LED_Strip Controller for Arduino UNO
-                     v.2 23 October 2022 D.L. Poole
+                     v. 2.1 25 October 2022 D.L. Poole
   -----------------------------------------------------------------------------------
 
   This controller for PWM-controlled RGB LED strips allows selection of illumination
@@ -328,7 +328,7 @@ void loop() {       //"You can check out any time you like, but you can never le
           else {
             bright *= 1.414213;
           }
-          if (bright >= 1.) {
+          if (bright > 1.) {
             bright = 1.;
             if (pwmCyclesON < 7) {
               pwmCyclesON++;

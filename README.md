@@ -3,17 +3,19 @@ Select desired illumination via an IR remote using either an HSB or RGB color mo
 <html>
 <body lang="en-US" dir="ltr">
 <p><b>D.L. Poole</b></p>
-<p><b>January 2017 </b>
+<p><b>24 October 2022 </b>
 </p>
-<p><b>This controller
-</b>arose from unsuccessful attempts to purchase an off-the-shelf RGB
-LED Strip Controller that could reach a wide, fine-grained range of
-colors. It allows selecting or editing a desired illumination via an
-infrared remote using either a Hue/Saturation/Brightness (HSB) or
-Red/Green/Blue (RGB) color model interchangeably.  The outputs are
-three 8-bit PWMs for MOSFETs or some other LED drivers.</p>
-<p>With
-reference to the accompanying remote keypad overlay, t</span>he
+<p><b>This controller </b>arose from unsuccessful attempts to purchase an off-the-shelf RGB LED Strip Controller that could reach a wide, fine-grained range of colors. It allows selecting or editing a desired illumination via an
+infrared remote using either a Hue/Saturation/Brightness (HSB) or Red/Green/Blue (RGB) color model interchangeably.  The outputs were three 8-bit PWMs for MOSFETs or other LED drivers.</p>
+
+<p> The original 2017 main used the FastLED CHSV object's hsv2rgb_rainbow color space which is based on linear ramps between primaries, but that had limitations in gamut using common 5030 LEDs. The yellow was dim, and at lower brightnesses, almost brownish. This branch uses the FastLED CHSV object's hsv2rgb_rainbow color space. HSV to RGB conversions and vice versa are implemented with code that implements the same slopes and intercepts since the FastLed library lacks a method for converting potentially edited RGB triplets back to HSV. For a fuller discussion, see https://github.com/FastLED/FastLED/wiki/Pixel-reference
+</p>
+
+![image](https://user-images.githubusercontent.com/13832029/197672617-129dd700-0b57-4815-897b-407617b11c54.png)
+
+This branch also adds three bits to the resolution of DIM and BRIGHT over and above the 8-bits of resolution per RGB primary. Each output can be blanked down to 1/8 counter interrupts so as to extend the dimming range to virtually extinguished before single steps cause hue and saturation shifts, as was evident in the original version I which the 8-bit analogWrite was used alone. 8-bit resolution is sufficient for hue and saturation.
+
+<p>With reference to the accompanying remote keypad overlay, t</span>he
 </span><b>Remote key functions</b> are as follows: 
 </p>
 <ul>

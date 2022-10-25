@@ -1,7 +1,7 @@
 /*
   -----------------------------------------------------------------------------------
                  LED_Strip Controller for Arduino UNO
-                      23 October 2022 D.L. Poole
+                     v.2 23 October 2022 D.L. Poole
   -----------------------------------------------------------------------------------
 
   This controller for PWM-controlled RGB LED strips allows selection of illumination

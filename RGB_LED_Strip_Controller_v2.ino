@@ -5,19 +5,19 @@
   -----------------------------------------------------------------------------------
 
   This controller for PWM-controlled RGB LED strips allows selection of illumination
-  with an NEC code IR remote using either a Red/Green/Blue or Hue/Saturation/Brightness
-  or Hue/Saturation/Brightness (HSB) color model.  The HSB hues follow the FastLED
+  with an NEC code IR remote using either a Red/Green/Blue or Hue/Saturation/Value
+  Hue/Saturation/Brightness (HSB) color model.  The hues follow the FastLED library 
   CHSV object's hsv2rgb_rainbow color space rather than hsv2rgb_spectrum in order to
-  produce a brighter and wider range of yellow.
+  produce a brighter and wider range of yellows.
 
-  The 8-bit PWM resolution built into the UNO tools is sufficient resolution for hue
-  and saturation, but limits the available dimming range without producing hue shifts
-  with brightness.  This rev2 enables the timer overflow interrupts and counts and
-  numbers PWM cycles as cycle 0-7. The refresh of 16 mS is sufficient to avoid even
+  The 8-bit PWM resolution of analogwrite() is sufficient resolution for hue
+  and saturation, but limits the available dimming range without producing hue shifts.
+  This rev2 enables the timer overflow interrupts, counts and numbers PWM cycles as
+  cycles 0-7. The resulting refresh time of 16 mS is sufficiently fast to avoid even
   peripheral (vision) flicker.  All eight PWM cycles are used at 100% at maximum
-  maximum brightnes. Gross dimming is governed by incrementing/decrementing the integer
+  maximum brightness. Gross dimming is governed by incrementing/decrementing the integer
   pwmCyclesON, producing eight 12.5% steps, beyond which fine dimming continues in
-  16 PWM steps down to zero.
+  PWM steps of a single 1:8 duty cycle down to blackout.
 
   Remote Key functions are as follows:
   HUE:    Select or modify hue, moving clockwise or counterclockwise along color circle
@@ -57,12 +57,9 @@
   produce visually similar steps at both ends of the range.
 
   The HSB color space lies along a line of 255 hues where 0=red, 32=orange, 64=green,
-  128=cyan, 128=blue, 192 is purple, and 255 is also red. Along the HSB hues the SUM of
-  RGB values (and the corresponding PWM outputs, red + green + blue equals 255, with
-  one primary always zero.
-
-  The addition of any third primary desaturates a pure hue towards white at sat=0 where
-  sat=1.0 for all pure hures.
+  128=cyan, 128=blue, 192 is purple, and 255 is also red. One primary always zero, as 
+  The addition of any third primary will desaturate a pure hue towards white at sat=0 where
+  sat=1.0 for all pure hues.
 
   Brightness is represented by the floating point variable 0.0 <= bright <=1.0 which is
   here defined as (red+green+blue)/255/3.  Brightness is thus a constant 1/3 along the
@@ -70,11 +67,11 @@
   zero. Brightness will max out the two primaries of a secondary color at bright = 2/3 and
   the three primaries of a gray at bright = 1.0
 
-  The HSV Spectrum color space, linear ramps on hue,  is not as good visually; what little
-  yellow there is appears dim, and at lower brightnesses, almost brownish. They are
-  here with ramp functions that implement the same intercepts  code rather than calls to
-  the FastLed library, which lacks a method for converting potentially edited rgb triplets
-  back to HSV. For a fuller discussion, see
+  The HSV Spectrum hue space, of linear ramps on hue is not as good visually; what little
+  yellow there is appears dim, and at lower brightnesses, almost brownish. The rainbow hue
+  space is implemented here with ramp functions that implement the same intercepts rather 
+  than calls to the FastLed library, which lacks a method for converting potentially edited
+  rgb triplets back to HSV anyway. For a fuller discussion, see
   https://github.com/FastLED/FastLED/wiki/Pixel-reference
 
 */
@@ -432,8 +429,8 @@ void HSBtoRGB(float hue, float sat, float & bright, float & red, float & green, 
   // There are three steps to RGB generation:
   // 1. Generate a pure, unsaturated primary or secondary where 0. <= red,green,blue <=255.
   // and red | green | blue == 0. The ramps of the fastLED rainbow profile are piecewise
-  // linear over 0. <= hue <=255. around yellow and cyan to increase the yellow range
-  // decrease the cyan range.
+  // linear over 0. <= hue <=255. The sum red+green+blue is non-constant around yellow and cyan
+  // to increase the yellow range and decrease the cyan range.
   // 2. Desaturate towards white at sat=0. to the extent the RGB LED gamut supports it without
   // a white emitter.
   // 3. Apply brightness to the desaturated color and return as the global red, green, and

@@ -13,7 +13,7 @@ infrared remote using either a Hue/Saturation/Brightness (HSB) or Red/Green/Blue
 
 ![image](https://user-images.githubusercontent.com/13832029/197672617-129dd700-0b57-4815-897b-407617b11c54.png)
 
-This branch also adds three bits to the resolution of DIM and BRIGHT over and above the 8-bits of resolution per RGB primary. Each output can be blanked down to 1/8 counter interrupts so as to extend the dimming range to virtually extinguished before single steps cause hue and saturation shifts, as was evident in the original version I which the 8-bit analogWrite was used alone. 8-bit resolution is sufficient for hue and saturation.
+This branch also adds three bits to the resolution of DIM and BRIGHT over and above the 8-bits of resolution per RGB primary. Each output can be blanked down to 1/8 timer interrupts so as to extend the dimming range to virtually extinguished before single steps cause hue and saturation shifts, as was evident in the original version in which the 8-bit analogWrite() was used alone. 8-bit resolution is sufficient for hue and saturation.
 
 <p>With reference to the accompanying remote keypad overlay, t</span>he
 </span><b>Remote key functions</b> are as follows: 
